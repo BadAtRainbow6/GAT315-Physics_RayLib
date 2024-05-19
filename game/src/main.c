@@ -24,7 +24,8 @@ int main(void)
 	InitEditor();
 	SetTargetFPS(60);
 
-	while (!WindowShouldClose()) {
+	while (!WindowShouldClose()) 
+	{
 		//update
 		float dt = GetFrameTime();
 		float fps = (float)GetFPS();
@@ -39,14 +40,17 @@ int main(void)
 		UpdateEditor(position);
 
 		selectedBody = GetBodyIntersect(ncBodies, position);
-		if (selectedBody) {
+		if (selectedBody) 
+		{
 			Vector2 screen = ConvertWorldToScreen(selectedBody->position);
 			DrawCircleLines(screen.x, screen.y, ConvertWorldToPixel(selectedBody->mass * 0.5f) + 5, YELLOW);
 		}
 
-		if (!ncEditorIntersect) {
+		if (!ncEditorIntersect) 
+		{
 			//create body
-			if ((IsMouseButtonPressed(0) || (IsMouseButtonDown(0) && IsKeyDown(KEY_LEFT_CONTROL)))) {
+			if ((IsMouseButtonPressed(0) || (IsMouseButtonDown(0) && IsKeyDown(KEY_LEFT_CONTROL)))) 
+			{
 				ncBody* body = CreateBody(ConvertScreenToWorld(position), ncEditorData.MassValue, ncEditorData.BodyTypeActive);
 				body->damping = ncEditorData.DampingValue;
 				body->gravityScale = ncEditorData.GravityScaleValue;
@@ -60,7 +64,8 @@ int main(void)
 			//connect springs
 			if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && selectedBody) connectBody = selectedBody;
 			if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && connectBody) DrawLineBodyToPosition(connectBody, position);
-			if (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) && connectBody) {
+			if (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) && connectBody) 
+			{
 				if (selectedBody && selectedBody != connectBody) {
 					ncSpring_t* spring = CreateSpring(connectBody, selectedBody, Vector2Distance(connectBody->position, selectedBody->position), 20);
 					AddSpring(spring);
@@ -92,19 +97,22 @@ int main(void)
 		DrawText(TextFormat("Frame: %.4f", dt), 10, 30, 20, LIME);
 
 		//draw bodies
-		for (ncBody* body = ncBodies; body; body = body->next) {
+		for (ncBody* body = ncBodies; body; body = body->next) 
+		{
 			Vector2 screen = ConvertWorldToScreen(body->position);
 			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(body->mass * 0.5f), body->color);
 		}
 
 		//draw contacts
-		for (ncContact_t* contact = contacts; contact; contact = contact->next) {
+		for (ncContact_t* contact = contacts; contact; contact = contact->next) 
+		{
 			Vector2 screen = ConvertWorldToScreen(contact->body1->position);
-			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(contact->body1->mass * 0.5f), BLUE);
+			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(contact->body1->mass * 0.5f), PURPLE);
 		}
 
 		//draw springs
-		for (ncSpring_t* spring = ncSprings; spring; spring = spring->next) {
+		for (ncSpring_t* spring = ncSprings; spring; spring = spring->next) 
+		{
 			Vector2 screen1 = ConvertWorldToScreen(spring->body1->position);
 			Vector2 screen2 = ConvertWorldToScreen(spring->body2->position);
 			DrawLine((int)screen1.x, (int)screen1.y, (int)screen2.x, (int)screen2.y, RED);
